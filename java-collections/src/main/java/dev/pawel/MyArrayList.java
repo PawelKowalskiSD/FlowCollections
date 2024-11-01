@@ -7,14 +7,13 @@ public class MyArrayList<E> implements MyList<E> {
     private static final int DEFAULT_SIZE = 0;
     private int capacity;
     private int size;
-    private Object []array;
+    private Object[] array;
 
     private MyArrayList(int capacity, int size) {
         this.capacity = capacity;
         this.size = size;
         this.array = new Object[capacity];
     }
-
 
     public MyArrayList(int capacity) {
         this(capacity, DEFAULT_SIZE);
@@ -43,66 +42,43 @@ public class MyArrayList<E> implements MyList<E> {
 
     @Override
     public boolean add(E element) {
-        if (capacity == size) {
-            capacity += capacity / 2;
-            Object []newArray = new Object[capacity];
-            array = resize(array, newArray);
-        }
+        resize();
         array[size] = element;
         size++;
         return true;
     }
 
-    private Object[] resize(Object[] oldArray, Object[] newArray) {
-        int count = 0;
-
-        while (count < oldArray.length) {
-            newArray[count] = oldArray[count];
-            count++;
-        }
-        return newArray;
-    }
-
-    private void resize(Object[] oldArray, Object[] newArray, int index, E element) {
-        int count = 0;
-        int countOld = 0;
-
-        while (count < oldArray.length) {
-            if(count == index)
-                newArray[count] = element;
-            else {
-                newArray[count] = oldArray[countOld];
-                countOld++;
-            }
-            count++;
-        }
-        array = newArray;
-    }
-
-
     @Override
     public void add(int index, E element) {
-        if (index > size) {
-            if (capacity == size) {
-                capacity += capacity / 2;
-                Object[] newArray = new Object[capacity];
-                resize(array, newArray, index, element);
-            } else {
-                Object[] newArray = new Object[capacity];
-                resize(array, newArray, index, element);
-            }
-            size++;
-        } else
+        if (index > size || index < 0)
             throw new ArrayIndexOutOfBoundsException();
+        resize();
+        for (int i = size; i > index; i--) {
+            array[i] = array[i - 1];
+        }
+        array[index] = element;
+        size++;
     }
 
     @Override
     public E remove(int index) {
-        return null;
+        if (index > size || index < 0)
+            throw new ArrayIndexOutOfBoundsException();
+        Object removed = array[index];
+        for (int i = index; i < size; i++) {
+            array[i] = array[i + 1];
+        }
+        size--;
+        return (E) removed;
     }
 
     @Override
     public boolean remove(E element) {
+        int index = indexOf(element);
+        if (index >= 0) {
+            remove(index);
+            return true;
+        }
         return false;
     }
 
@@ -121,6 +97,15 @@ public class MyArrayList<E> implements MyList<E> {
     }
 
     @Override
+    public int indexOf(E element) {
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(element, array[i]))
+                return i;
+        }
+        return -1;
+    }
+
+    @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         int i = 0;
@@ -134,5 +119,18 @@ public class MyArrayList<E> implements MyList<E> {
         }
         return '[' + result +
                 ']';
+    }
+
+    private void resize() {
+        int count = 0;
+        if (capacity == size) {
+            capacity += capacity / 2;
+            Object[] newArray = new Object[capacity];
+            while (count < array.length) {
+                newArray[count] = array[count];
+                count++;
+            }
+            array = newArray;
+        }
     }
 }

@@ -9,4 +9,5 @@ public interface MyList<E> {
     boolean remove(E element);
     int size();
     boolean contains(E element);
+    int indexOf(E element);
 }
