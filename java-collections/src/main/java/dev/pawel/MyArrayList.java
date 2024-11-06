@@ -15,6 +15,13 @@ public class MyArrayList<E> implements MyList<E> {
         this.array = new Object[capacity];
     }
 
+    public MyArrayList(MyList<E> myList) {
+        this(DEFAULT_CAPACITY, DEFAULT_SIZE);
+        for (int i = 0; i < myList.size(); i++) {
+            add(i, myList.get(i));
+        }
+    }
+
     public MyArrayList(int capacity) {
         this(capacity, DEFAULT_SIZE);
     }
@@ -61,13 +68,21 @@ public class MyArrayList<E> implements MyList<E> {
     }
 
     @Override
+    public boolean addAll(MyList<E> myList) {
+        if (myList.size() == 0)
+            return false;
+        for (int i = 0; i < myList.size(); i++)
+            add(myList.get(i));
+        return true;
+    }
+
+    @Override
     public E remove(int index) {
-        if (index > size || index < 0)
+        if (index >= size || index < 0)
             throw new ArrayIndexOutOfBoundsException();
         Object removed = array[index];
-        for (int i = index; i < size; i++) {
+        for (int i = index; i < size; i++)
             array[i] = array[i + 1];
-        }
         size--;
         return (E) removed;
     }
@@ -83,17 +98,17 @@ public class MyArrayList<E> implements MyList<E> {
     }
 
     @Override
-    public int size() {
-        return size;
-    }
-
-    @Override
     public boolean contains(E element) {
         for (int i = 0; i < size; i++) {
             if (Objects.equals(element, array[i]))
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public int size() {
+        return size;
     }
 
     @Override
