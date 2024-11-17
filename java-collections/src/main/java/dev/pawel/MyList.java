@@ -1,5 +1,7 @@
 package dev.pawel;
 
+import dev.pawel.arraylist.MyArrayList;
+
 public interface MyList<E> {
 
     E get(int index);

@@ -1,6 +1,9 @@
-package dev.pawel;
+package dev.pawel.arraylist;
 
+import dev.pawel.MyList;
 import org.junit.jupiter.api.Test;
+
+import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
