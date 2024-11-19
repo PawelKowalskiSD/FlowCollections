@@ -215,12 +215,12 @@ class MyLinkedListTest {
         myList.add(element3);
         myList.add(element4);
         //When & Then
-        assertThrows(NullPointerException.class, () -> myList.set(4, element5));
+        assertThrows(IndexOutOfBoundsException.class, () -> myList.set(4, element5));
     }
     @Test
     void shouldNotGetSingleElement_whenIndexIsNotExists() {
         //Given
-        MyList<String> myList = new MyArrayList<>();
+        MyList<String> myList = new MyLinkedList<>();
         String element1 = "Roman";
         String element2 = "Tomek";
         String element3 = "Pawel";
@@ -238,7 +238,7 @@ class MyLinkedListTest {
         MyList<String> myList = new MyLinkedList<>();
         String element1 = "Roman";
         //When & Then
-        assertThrows(NullPointerException.class, () -> myList.add(1, element1));
+        assertThrows(IndexOutOfBoundsException.class, () -> myList.add(1, element1));
         assertEquals(0, myList.size());
     }
 
@@ -248,13 +248,13 @@ class MyLinkedListTest {
         MyList<String> myList = new MyLinkedList<>();
         String element1 = "Roman";
         //When & Then
-        assertThrows(NullPointerException.class, () -> myList.add(-1, element1));
+        assertThrows(IndexOutOfBoundsException.class, () -> myList.add(-1, element1));
         assertEquals(0, myList.size());
     }
     @Test
     void shouldThrowException_whenIndexIsLessThanZero() {
         //Given
-        MyList<String> myList = new MyArrayList<>();
+        MyList<String> myList = new MyLinkedList<>();
         String element1 = "Test";
         String element2 = "pen";
         String element3 = "Pawel";

@@ -3,20 +3,18 @@ package dev.pawel.linkedlist;
 import dev.pawel.MyList;
 
 public class MyLinkedList<E> implements MyList<E> {
-    private Node<E> head;
     private final static int DEFAULT_SIZE = 0;
-    private int size = 0;
+    private Node<E> head;
+    private int size;
 
     public MyLinkedList() {
         this.head = null;
         size = DEFAULT_SIZE;
     }
 
-
     @Override
     public E get(int index) {
-        if (index < 0 || index > size)
-            throw new IndexOutOfBoundsException();
+        checkIndexIsValid(index);
         int count = 0;
         Node<E> temp = head;
         while (count < size) {
@@ -38,13 +36,10 @@ public class MyLinkedList<E> implements MyList<E> {
 
     @Override
     public boolean add(E element) {
-        if (head == null) {
+        if (head == null)
             head = new Node<>(element);
-        } else {
-            Node<E> temp = head;
-            while (temp.next != null) {
-                temp = temp.next;
-            }
+        else {
+            Node<E> temp = nodeIterator();
             temp.next = new Node<>(element);
         }
         size++;
@@ -62,21 +57,13 @@ public class MyLinkedList<E> implements MyList<E> {
 
     @Override
     public E remove(int index) {
-        Node<E> findPrevNode = getNode(index - 1);
-        Node<E> removeNode = getNode(index);
-        findPrevNode.next = removeNode.next;
-        removeNode.next = null;
-        size--;
+        Node<E> removeNode = getRemoveNode(index);
         return removeNode.data;
     }
 
     @Override
     public boolean remove(E element) {
-        Node<E> prevElement = getNode(indexOf(element) - 1);
-        Node<E> removeElement = getNode(indexOf(element));
-        prevElement.next = removeElement.next;
-        removeElement.next = null;
-        size--;
+        getRemoveNode(indexOf(element));
         return true;
     }
 
@@ -87,10 +74,8 @@ public class MyLinkedList<E> implements MyList<E> {
 
     @Override
     public boolean contains(E element) {
-        Node<E> temp = head;
-        while (!temp.data.equals(element) && temp.next != null)
-            temp = temp.next;
-        return temp.data.equals(element) || temp.next != null;
+        Node<E> temp = nodeIterator();
+        return temp.data.equals(element);
     }
 
     @Override
@@ -116,29 +101,43 @@ public class MyLinkedList<E> implements MyList<E> {
 
     @Override
     public String toString() {
-        int count = 1;
         StringBuilder result = new StringBuilder();
         Node<E> temp = head;
-        while (count <= size && temp != null) {
-            if (count != size & temp.next != null)
-                result.append(temp).append(", ");
-            else
-                result.append(temp);
-            count++;
+        while (temp.next != null) {
+            result.append(temp).append(", ");
             temp = temp.next;
         }
+        result.append(temp);
         return "[" + result + "]";
     }
 
-    private Node<E> getNode(int index) {
+    private Node<E> nodeIterator() {
         Node<E> temp = head;
-        if (index < 0 || index > size)
-            throw new NullPointerException();
-        else {
-            for (int i = 0; i < index; i++)
-                temp = temp.next;
-        }
+        while (temp.next != null)
+            temp = temp.next;
         return temp;
+    }
+
+    private Node<E> getRemoveNode(int index) {
+        Node<E> findPrevNode = getNode(index - 1);
+        Node<E> removeNode = getNode(index);
+        findPrevNode.next = removeNode.next;
+        removeNode.next = null;
+        size--;
+        return removeNode;
+    }
+
+    private Node<E> getNode(int index) {
+        checkIndexIsValid(index);
+        Node<E> temp = head;
+        for (int i = 0; i < index; i++)
+            temp = temp.next;
+        return temp;
+    }
+
+    private void checkIndexIsValid(int index) {
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException();
     }
 
     private static class Node<E> {
