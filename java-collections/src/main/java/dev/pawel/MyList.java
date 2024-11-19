@@ -23,7 +23,7 @@ public interface MyList<E> {
     boolean addAll(MyList<E> myList);
 
     static <E> MyList<E> of(E... elements) {
-        MyList<E> myList = new MyArrayList<>();
+        MyList<E> myList = new MyArrayList<>(elements.length);
         for (E element : elements)
             myList.add(element);
         return myList;
