@@ -1,7 +1,6 @@
 package dev.pawel.linkedlist;
 
 import dev.pawel.MyList;
-import dev.pawel.arraylist.MyArrayList;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,6 +30,7 @@ class MyLinkedListTest {
         assertEquals(2, myList.indexOf(element3));
         assertEquals(3, myList.indexOf(element4));
     }
+
     @Test
     void shouldAddMultipleElement_onSpecificIndex() {
         //Given
@@ -51,6 +51,7 @@ class MyLinkedListTest {
         assertEquals(element2, myList.get(2));
         assertEquals(element3, myList.get(3));
     }
+
     @Test
     void shouldSetValueByIndex() {
         //Given
@@ -77,6 +78,7 @@ class MyLinkedListTest {
         assertEquals(2, myList.indexOf(element5));
         assertEquals(3, myList.indexOf(element4));
     }
+
     @Test
     void shouldReturnFalse_WhenContainsElementNotEquals() {
         //Given
@@ -124,6 +126,7 @@ class MyLinkedListTest {
         assertEquals(element4, myList.get(3));
         assertEquals(element5, myList.get(4));
     }
+
     @Test
     void shouldRemoveElementByIndex() {
         //Given
@@ -145,6 +148,7 @@ class MyLinkedListTest {
         assertEquals(element4, myList.get(2));
         System.out.println(myList);
     }
+
     @Test
     void shouldRemoveElement() {
         //Given
@@ -166,6 +170,7 @@ class MyLinkedListTest {
         assertEquals(element3, myList.get(1));
         assertEquals(element4, myList.get(2));
     }
+
     @Test
     void shouldAddAllElements_fromOneArrayToSecond() {
         //Given
@@ -201,6 +206,35 @@ class MyLinkedListTest {
         assertEquals(4, myFirstList.indexOf(element5));
         assertEquals(5, myFirstList.indexOf(element6));
     }
+
+    @Test
+    void shouldReturnFalse_whenAddEmptyListToFirstList() {
+        //Given
+        MyList<String> myFirstList = new MyLinkedList<>();
+        MyList<String> mySecondList = new MyLinkedList<>();
+        String element1 = "Roman";
+        String element2 = "Tomek";
+        String element3 = "Pawel";
+        String element4 = "Damian";
+        myFirstList.add(element1);
+        myFirstList.add(element2);
+        myFirstList.add(element3);
+        myFirstList.add(element4);
+        //When
+        boolean result = myFirstList.addAll(mySecondList);
+        //Then
+        assertEquals(4, myFirstList.size());
+        assertEquals(element1, myFirstList.get(0));
+        assertEquals(element2, myFirstList.get(1));
+        assertEquals(element3, myFirstList.get(2));
+        assertEquals(element4, myFirstList.get(3));
+        assertEquals(0, myFirstList.indexOf(element1));
+        assertEquals(1, myFirstList.indexOf(element2));
+        assertEquals(2, myFirstList.indexOf(element3));
+        assertEquals(3, myFirstList.indexOf(element4));
+        assertFalse(result);
+    }
+
     @Test
     void shouldNotSetSingleElement_whenIndexIsNotExists() {
         //Given
@@ -217,6 +251,7 @@ class MyLinkedListTest {
         //When & Then
         assertThrows(IndexOutOfBoundsException.class, () -> myList.set(4, element5));
     }
+
     @Test
     void shouldNotGetSingleElement_whenIndexIsNotExists() {
         //Given
@@ -232,6 +267,7 @@ class MyLinkedListTest {
         //When & Then
         assertThrows(IndexOutOfBoundsException.class, () -> myList.get(4));
     }
+
     @Test
     void shouldNotAddSingleElement_onSpecificIndex_WhenIndexIsGreaterThanSize() {
         //Given
@@ -251,6 +287,7 @@ class MyLinkedListTest {
         assertThrows(IndexOutOfBoundsException.class, () -> myList.add(-1, element1));
         assertEquals(0, myList.size());
     }
+
     @Test
     void shouldThrowException_whenIndexIsLessThanZero() {
         //Given
@@ -273,5 +310,4 @@ class MyLinkedListTest {
         assertEquals(element3, myList.get(2));
         assertEquals(element4, myList.get(3));
     }
-
 }

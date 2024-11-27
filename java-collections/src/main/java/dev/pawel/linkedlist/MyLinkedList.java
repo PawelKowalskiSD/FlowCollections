@@ -17,10 +17,7 @@ public class MyLinkedList<E> implements MyList<E> {
         checkIndexIsValid(index);
         int count = 0;
         Node<E> temp = head;
-        while (count < size) {
-            if (count == index) {
-                break;
-            }
+        while (count != index) {
             temp = temp.next;
             count++;
         }
@@ -29,7 +26,7 @@ public class MyLinkedList<E> implements MyList<E> {
 
     @Override
     public E set(int index, E element) {
-        Node<E> setElement = getNode(index);
+        Node<E> setElement = getNodeByIndex(index);
         setElement.data = element;
         return setElement.data;
     }
@@ -39,7 +36,7 @@ public class MyLinkedList<E> implements MyList<E> {
         if (head == null)
             head = new Node<>(element);
         else {
-            Node<E> temp = nodeIterator();
+            Node<E> temp = getLastNode();
             temp.next = new Node<>(element);
         }
         size++;
@@ -48,22 +45,27 @@ public class MyLinkedList<E> implements MyList<E> {
 
     @Override
     public void add(int index, E element) {
-        Node<E> findPrevNode = getNode(index - 1);
-        Node<E> addNewNode = new Node<>(element);
-        addNewNode.next = findPrevNode.next;
-        findPrevNode.next = addNewNode;
+        Node<E> addNode = new Node<>(element);
+        Node<E> add = changingTheBondsBetweenNodes(addNode, getNodeByIndex(index - 1));
+        add.next = addNode;
         size++;
     }
 
     @Override
     public E remove(int index) {
-        Node<E> removeNode = getRemoveNode(index);
+        Node<E> removeNode =
+                changingTheBondsBetweenNodes(getNodeByIndex(index - 1), getNodeByIndex(index));
+        removeNode.next = null;
+        size--;
         return removeNode.data;
     }
 
     @Override
     public boolean remove(E element) {
-        getRemoveNode(indexOf(element));
+        Node<E> removeNode =
+                changingTheBondsBetweenNodes(getNodeByIndex(indexOf(element) - 1), getNodeByIndex(indexOf(element)));
+        removeNode.next = null;
+        size--;
         return true;
     }
 
@@ -74,7 +76,7 @@ public class MyLinkedList<E> implements MyList<E> {
 
     @Override
     public boolean contains(E element) {
-        Node<E> temp = nodeIterator();
+        Node<E> temp = getLastNode();
         return temp.data.equals(element);
     }
 
@@ -82,7 +84,7 @@ public class MyLinkedList<E> implements MyList<E> {
     public int indexOf(E element) {
         int count = 0;
         Node<E> temp = head;
-        while (!temp.data.equals(element) && temp.next != null) {
+        while (!temp.data.equals(element)) {
             temp = temp.next;
             count++;
         }
@@ -111,26 +113,24 @@ public class MyLinkedList<E> implements MyList<E> {
         return "[" + result + "]";
     }
 
-    private Node<E> nodeIterator() {
+    private Node<E> getNodeByIndex(int index) {
+        checkIndexIsValid(index);
         Node<E> temp = head;
-        while (temp.next != null)
+        for (int i = 0; i < index; i++)
             temp = temp.next;
         return temp;
     }
 
-    private Node<E> getRemoveNode(int index) {
-        Node<E> findPrevNode = getNode(index - 1);
-        Node<E> removeNode = getNode(index);
-        findPrevNode.next = removeNode.next;
-        removeNode.next = null;
-        size--;
-        return removeNode;
+    private Node<E> changingTheBondsBetweenNodes(
+            Node<E> nodePointsIndicatedNodeByIndex,
+            Node<E> indicatedNodeByIndex) {
+        nodePointsIndicatedNodeByIndex.next = indicatedNodeByIndex.next;
+        return indicatedNodeByIndex;
     }
 
-    private Node<E> getNode(int index) {
-        checkIndexIsValid(index);
+    private Node<E> getLastNode() {
         Node<E> temp = head;
-        for (int i = 0; i < index; i++)
+        while (temp.next != null)
             temp = temp.next;
         return temp;
     }
@@ -155,5 +155,3 @@ public class MyLinkedList<E> implements MyList<E> {
         }
     }
 }
-
-
