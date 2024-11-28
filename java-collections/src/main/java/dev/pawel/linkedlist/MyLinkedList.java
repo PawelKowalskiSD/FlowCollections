@@ -14,14 +14,8 @@ public class MyLinkedList<E> implements MyList<E> {
 
     @Override
     public E get(int index) {
-        checkIndexIsValid(index);
-        int count = 0;
-        Node<E> temp = head;
-        while (count != index) {
-            temp = temp.next;
-            count++;
-        }
-        return temp.data;
+        Node<E> node = getNodeByIndex(index);
+        return node.data;
     }
 
     @Override
@@ -46,24 +40,22 @@ public class MyLinkedList<E> implements MyList<E> {
     @Override
     public void add(int index, E element) {
         Node<E> addNode = new Node<>(element);
-        Node<E> add = changingTheBondsBetweenNodes(addNode, getNodeByIndex(index - 1));
+        Node<E> add = changeBondsBetweenNodes(addNode, getNodeByIndex(index - 1));
         add.next = addNode;
         size++;
     }
 
     @Override
     public E remove(int index) {
-        Node<E> removeNode =
-                changingTheBondsBetweenNodes(getNodeByIndex(index - 1), getNodeByIndex(index));
-        removeNode.next = null;
-        size--;
+        Node<E> removeNode = getNodeByIndex(index);
+        remove(removeNode.data);
         return removeNode.data;
     }
 
     @Override
     public boolean remove(E element) {
         Node<E> removeNode =
-                changingTheBondsBetweenNodes(getNodeByIndex(indexOf(element) - 1), getNodeByIndex(indexOf(element)));
+                changeBondsBetweenNodes(getNodeByIndex(indexOf(element) - 1), getNodeByIndex(indexOf(element)));
         removeNode.next = null;
         size--;
         return true;
@@ -82,22 +74,19 @@ public class MyLinkedList<E> implements MyList<E> {
 
     @Override
     public int indexOf(E element) {
-        int count = 0;
         Node<E> temp = head;
-        while (!temp.data.equals(element)) {
+        for (int i = 0; i < size; i++) {
+            if (temp.data.equals(element))
+                return i;
             temp = temp.next;
-            count++;
         }
-        return count;
+        return -1;
     }
 
     @Override
     public boolean addAll(MyList<E> myList) {
-        if (myList.size() == 0)
-            return false;
-        for (int i = 0; i < myList.size(); i++) {
+        for (int i = 0; i < myList.size(); i++)
             add(myList.get(i));
-        }
         return true;
     }
 
@@ -113,19 +102,17 @@ public class MyLinkedList<E> implements MyList<E> {
         return "[" + result + "]";
     }
 
+    private Node<E> changeBondsBetweenNodes(Node<E> firstNode, Node<E> secondNode) {
+        firstNode.next = secondNode.next;
+        return secondNode;
+    }
+
     private Node<E> getNodeByIndex(int index) {
         checkIndexIsValid(index);
         Node<E> temp = head;
         for (int i = 0; i < index; i++)
             temp = temp.next;
         return temp;
-    }
-
-    private Node<E> changingTheBondsBetweenNodes(
-            Node<E> nodePointsIndicatedNodeByIndex,
-            Node<E> indicatedNodeByIndex) {
-        nodePointsIndicatedNodeByIndex.next = indicatedNodeByIndex.next;
-        return indicatedNodeByIndex;
     }
 
     private Node<E> getLastNode() {

@@ -208,34 +208,6 @@ class MyLinkedListTest {
     }
 
     @Test
-    void shouldReturnFalse_whenAddEmptyListToFirstList() {
-        //Given
-        MyList<String> myFirstList = new MyLinkedList<>();
-        MyList<String> mySecondList = new MyLinkedList<>();
-        String element1 = "Roman";
-        String element2 = "Tomek";
-        String element3 = "Pawel";
-        String element4 = "Damian";
-        myFirstList.add(element1);
-        myFirstList.add(element2);
-        myFirstList.add(element3);
-        myFirstList.add(element4);
-        //When
-        boolean result = myFirstList.addAll(mySecondList);
-        //Then
-        assertEquals(4, myFirstList.size());
-        assertEquals(element1, myFirstList.get(0));
-        assertEquals(element2, myFirstList.get(1));
-        assertEquals(element3, myFirstList.get(2));
-        assertEquals(element4, myFirstList.get(3));
-        assertEquals(0, myFirstList.indexOf(element1));
-        assertEquals(1, myFirstList.indexOf(element2));
-        assertEquals(2, myFirstList.indexOf(element3));
-        assertEquals(3, myFirstList.indexOf(element4));
-        assertFalse(result);
-    }
-
-    @Test
     void shouldNotSetSingleElement_whenIndexIsNotExists() {
         //Given
         MyList<String> myList = new MyLinkedList<>();
@@ -309,5 +281,26 @@ class MyLinkedListTest {
         assertEquals(element2, myList.get(1));
         assertEquals(element3, myList.get(2));
         assertEquals(element4, myList.get(3));
+    }
+
+    @Test
+    void shouldReturnMinusOne_WhenIndexOfElementNotExists() {
+        //Given
+        MyList<String> myList = new MyLinkedList<>();
+        String element1 = "Test";
+        String element2 = "pen";
+        String element3 = "Pawel";
+        String element4 = "Damian";
+        myList.add(element1);
+        myList.add(element2);
+        myList.add(element3);
+        //When
+        int result = myList.indexOf(element4);
+        //Then
+        assertEquals(3, myList.size());
+        assertEquals(element1, myList.get(0));
+        assertEquals(element2, myList.get(1));
+        assertEquals(element3, myList.get(2));
+        assertEquals(-1, result);
     }
 }
