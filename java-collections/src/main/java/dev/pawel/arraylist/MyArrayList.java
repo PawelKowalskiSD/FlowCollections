@@ -11,17 +11,17 @@ public class MyArrayList<E> implements MyList<E> {
     private int size;
     private Object[] array;
 
+    public MyArrayList(MyList<E> myList) {
+        this(myList.size());
+        for (int i = 0; i < myList.size(); i++) {
+            add(i, myList.get(i));
+        }
+    }
+
     private MyArrayList(int capacity, int size) {
         this.capacity = capacity;
         this.size = size;
         this.array = new Object[capacity];
-    }
-
-    public MyArrayList(MyList<E> myList) {
-        this(DEFAULT_CAPACITY, DEFAULT_SIZE);
-        for (int i = 0; i < myList.size(); i++) {
-            add(i, myList.get(i));
-        }
     }
 
     public MyArrayList(int capacity) {
