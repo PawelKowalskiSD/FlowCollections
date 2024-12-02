@@ -1,4 +1,6 @@
-package dev.pawel;
+package dev.pawel.arraylist;
+
+import dev.pawel.MyList;
 
 import java.util.Objects;
 
