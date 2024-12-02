@@ -103,7 +103,7 @@ class MyLinkedListTest {
     }
 
     @Test
-    void shouldReturnTrue_WhenContainsElementExists() {
+    void shouldReturnTrue_WhenContainsLastElementExists() {
         //Given
         MyList<String> myList = new MyLinkedList<>();
         String element1 = "Test";
@@ -118,6 +118,56 @@ class MyLinkedListTest {
         myList.add(element5);
         //When
         boolean result = myList.contains(element5);
+        //Then
+        assertTrue(result);
+        assertEquals(element1, myList.get(0));
+        assertEquals(element2, myList.get(1));
+        assertEquals(element3, myList.get(2));
+        assertEquals(element4, myList.get(3));
+        assertEquals(element5, myList.get(4));
+    }
+
+    @Test
+    void shouldReturnTrue_WhenContainsFirstElementIfExists() {
+        //Given
+        MyList<String> myList = new MyLinkedList<>();
+        String element1 = "Test";
+        String element2 = "pen";
+        String element3 = "Pawel";
+        String element4 = "Damian";
+        String element5 = "David";
+        myList.add(element1);
+        myList.add(element2);
+        myList.add(element3);
+        myList.add(element4);
+        myList.add(element5);
+        //When
+        boolean result = myList.contains(element1);
+        //Then
+        assertTrue(result);
+        assertEquals(element1, myList.get(0));
+        assertEquals(element2, myList.get(1));
+        assertEquals(element3, myList.get(2));
+        assertEquals(element4, myList.get(3));
+        assertEquals(element5, myList.get(4));
+    }
+
+    @Test
+    void shouldReturnTrue_WhenContainsMiddleElementIfExists() {
+        //Given
+        MyList<String> myList = new MyLinkedList<>();
+        String element1 = "Test";
+        String element2 = "pen";
+        String element3 = "Pawel";
+        String element4 = "Damian";
+        String element5 = "David";
+        myList.add(element1);
+        myList.add(element2);
+        myList.add(element3);
+        myList.add(element4);
+        myList.add(element5);
+        //When
+        boolean result = myList.contains(element3);
         //Then
         assertTrue(result);
         assertEquals(element1, myList.get(0));

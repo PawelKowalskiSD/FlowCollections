@@ -68,8 +68,7 @@ public class MyLinkedList<E> implements MyList<E> {
 
     @Override
     public boolean contains(E element) {
-        Node<E> temp = getLastNode();
-        return temp.data.equals(element);
+        return indexOf(element) >= 0;
     }
 
     @Override
