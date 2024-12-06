@@ -2,14 +2,25 @@ package dev.pawel.hashmap;
 
 import dev.pawel.MyList;
 import dev.pawel.MyMap;
+import dev.pawel.linkedlist.MyLinkedList;
 
 public class MyHashMap<K, V> implements MyMap<K, V> {
+    private static final int DEFAULT_SIZE = 0;
+    private static final int DEFAULT_CAPACITY = 10;
     private Node<K, V>[] table = new Node[10];
-    private static int DEFAULT_SIZE = 0;
-    private int size = 0;
+    private int size;
+    private int capacity;
+
+    private MyHashMap(int capacity, int size) {
+        this.capacity = capacity;
+        this.size = size;
+    }
+    public MyHashMap(int capacity) {
+        this(capacity, DEFAULT_SIZE);
+    }
 
     public MyHashMap() {
-        this.size = DEFAULT_SIZE;
+        this(DEFAULT_CAPACITY, DEFAULT_SIZE);
     }
 
     @Override
@@ -19,16 +30,22 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     @Override
     public boolean containsKey(K key) {
+        for (Node<K, V> findKey : table)
+            if (findKey.key.equals(key))
+                return true;
         return false;
     }
 
     @Override
     public boolean containsValue(V value) {
+        for (Node<K, V> findValue : table)
+            if (findValue.value.equals(value))
+                return true;
         return false;
     }
 
@@ -47,35 +64,50 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
         node.key = key;
         node.value = value;
         table[index] = node;
+        size++;
         return value;
     }
 
     @Override
     public V remove(K key) {
+        if(containsKey(key)) {
+
+        }
+
         return null;
     }
 
     @Override
     public void clear() {
-
+        for (Node<K, V> clearHashMap : table)
+            remove(clearHashMap.key);
     }
 
     @Override
     public MyList<K> keySet() {
-        return null;
+        MyList<K> myList = new MyLinkedList<>();
+        for (Node<K, V> findKey : table)
+            myList.add(findKey.key);
+        return myList;
     }
 
     @Override
     public MyList<V> values() {
-        return null;
+        MyList<V> myList = new MyLinkedList<>();
+        for (Node<K, V> findValue : table)
+            myList.add(findValue.value);
+        return myList;
     }
 
     @Override
     public MyList<Entry<K, V>> entrySet() {
-        return null;
+        MyList<Entry<K, V>> myList = new MyLinkedList<>();
+        for (Entry<K, V> findNode : table)
+            myList.add(findNode);
+        return myList;
     }
 
-    private class Node<K, V> implements Entry<K, V> {
+    private static class Node<K, V> implements Entry<K, V> {
         private K key;
         private V value;
         private Node<K, V> next;

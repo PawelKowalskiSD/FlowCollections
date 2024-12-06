@@ -61,4 +61,150 @@ class MyHashMapTest {
         assertEquals(damianSmithValue, myHashMap.get(damianSmithId));
     }
 
+    @Test
+    void shouldReturnHashConflict_whenKeyIsDifferentAndHashCodeIsTheSame() {
+        //Given
+        String robertNowakKeyId = "12";
+        String robertNowakValue = "Robert Nowak";
+        String damianSmithId = "12222";
+        String damianSmithValue = "Damian Smith";
+        MyMap<String, String> myHashMap = new MyHashMap<>();
+        myHashMap.put(robertNowakKeyId, robertNowakValue);
+        myHashMap.put(damianSmithId, damianSmithValue);
+        //When
+        int getFirstKeyHashCode = myHashMap.entrySet().get(0).getKey().hashCode();
+        int getSecondKeyHashCode = myHashMap.entrySet().get(1).getKey().hashCode();
+        //Then
+        assertEquals(getFirstKeyHashCode, getSecondKeyHashCode);
+        assertEquals(damianSmithValue, myHashMap.get(damianSmithId));
+        assertEquals(robertNowakValue, myHashMap.get(robertNowakKeyId));
+    }
+
+    @Test
+    void shouldReturnTrue_whenHashMapIsEmpty() {
+        //Given
+        MyMap<String, String> myHashMap = new MyHashMap<>();
+        //When
+        boolean isEmpty = myHashMap.isEmpty();
+        //then
+        assertTrue(isEmpty);
+        assertEquals(0, myHashMap.size());
+    }
+
+    @Test
+    void shouldReturnFalse_whenHashMapIsNotEmpty() {
+        //Given
+        MyMap<String, String> myHashMap = new MyHashMap<>();
+        String robertNowakKeyId = "12";
+        String robertNowakValue = "Robert Nowak";
+        myHashMap.put(robertNowakKeyId, robertNowakValue);
+        //When
+        boolean isEmpty = myHashMap.isEmpty();
+        //then
+        assertFalse(isEmpty);
+        assertEquals(1, myHashMap.size());
+    }
+
+    @Test
+    void shouldReturnTrue_whenFindContainsKey() {
+        //Given
+        String robertNowakKeyId = "12";
+        String robertNowakValue = "Robert Nowak";
+        String damianSmithId = "12222";
+        String damianSmithValue = "Damian Smith";
+        MyMap<String, String> myHashMap = new MyHashMap<>();
+        myHashMap.put(robertNowakKeyId, robertNowakValue);
+        myHashMap.put(damianSmithId, damianSmithValue);
+        //When
+        boolean isFounded = myHashMap.containsKey(damianSmithId);
+        //Then
+        assertTrue(isFounded);
+        assertEquals(2, myHashMap.size());
+    }
+
+    @Test
+    void shouldReturnFalse_WhenKeyIsNotFound() {
+        //Given
+        String robertNowakKeyId = "12";
+        String robertNowakValue = "Robert Nowak";
+        String damianSmithId = "12222";
+        String damianSmithValue = "Damian Smith";
+        String adamRooneyId = "12231313131315";
+        MyMap<String, String> myHashMap = new MyHashMap<>();
+        myHashMap.put(robertNowakKeyId, robertNowakValue);
+        myHashMap.put(damianSmithId, damianSmithValue);
+        //When
+        boolean isFounded = myHashMap.containsKey(adamRooneyId);
+        //Then
+        assertFalse(isFounded);
+        assertEquals(2, myHashMap.size());
+    }
+
+    @Test
+    void shouldReturnTrue_whenFindContainsValue() {
+        //Given
+        String robertNowakKeyId = "12";
+        String robertNowakValue = "Robert Nowak";
+        String damianSmithId = "12222";
+        String damianSmithValue = "Damian Smith";
+        String adamRooneyValue = "Adam Rooney";
+        MyMap<String, String> myHashMap = new MyHashMap<>();
+        myHashMap.put(robertNowakKeyId, robertNowakValue);
+        myHashMap.put(damianSmithId, damianSmithValue);
+        //When
+        boolean isFounded = myHashMap.containsValue(adamRooneyValue);
+        //Then
+        assertFalse(isFounded);
+        assertEquals(2, myHashMap.size());
+    }
+
+    @Test
+    void shouldReturnFalse_WhenValueIsNotFound() {
+        //Given
+        String robertNowakKeyId = "12";
+        String robertNowakValue = "Robert Nowak";
+        String damianSmithId = "12222";
+        String damianSmithValue = "Damian Smith";
+        String adamRooneyValue = "Adam Rooney";
+        MyMap<String, String> myHashMap = new MyHashMap<>();
+        myHashMap.put(robertNowakKeyId, robertNowakValue);
+        myHashMap.put(damianSmithId, damianSmithValue);
+        //When
+        boolean isFounded = myHashMap.containsValue(adamRooneyValue);
+        //Then
+        assertFalse(isFounded);
+        assertEquals(2, myHashMap.size());
+    }
+
+    @Test
+    void shouldRemoveByKey() {
+        //Given
+        String robertNowakKeyId = "12";
+        String robertNowakValue = "Robert Nowak";
+        String damianSmithId = "12222";
+        String damianSmithValue = "Damian Smith";
+        MyMap<String, String> myHashMap = new MyHashMap<>();
+        myHashMap.put(robertNowakKeyId, robertNowakValue);
+        myHashMap.put(damianSmithId, damianSmithValue);
+        //When
+        Object remove = myHashMap.remove(robertNowakKeyId);
+        //Then
+        assertEquals(1, myHashMap.size());
+        assertEquals(robertNowakKeyId, remove);
+    }
+
+    @Test
+    void shouldThrowException_WhenRemoveKeyNotExist() {
+        //Given
+        String robertNowakKeyId = "12";
+        String robertNowakValue = "Robert Nowak";
+        String damianSmithId = "12222";
+        String damianSmithValue = "Damian Smith";
+        String adamRooneyId = "12231313131315";
+        MyMap<String, String> myHashMap = new MyHashMap<>();
+        myHashMap.put(robertNowakKeyId, robertNowakValue);
+        myHashMap.put(damianSmithId, damianSmithValue);
+        //When & Then
+        assertThrows(IndexOutOfBoundsException.class, () -> myHashMap.remove(adamRooneyId));
+    }
 }
