@@ -3,6 +3,10 @@ package dev.pawel.hashmap;
 import dev.pawel.MyMap;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MyHashMapTest {
@@ -72,9 +76,10 @@ class MyHashMapTest {
         myHashMap.put(robertNowakKeyId, robertNowakValue);
         myHashMap.put(damianSmithId, damianSmithValue);
         //When
-        int getFirstKeyHashCode = myHashMap.entrySet().get(0).getKey().hashCode();
-        int getSecondKeyHashCode = myHashMap.entrySet().get(1).getKey().hashCode();
+        int getFirstKeyHashCode = myHashMap.entrySet().get(0).getKey().hashCode() % 10;
+        int getSecondKeyHashCode = myHashMap.entrySet().get(1).getKey().hashCode() % 10;
         //Then
+        assertEquals(2, myHashMap.size());
         assertEquals(getFirstKeyHashCode, getSecondKeyHashCode);
         assertEquals(damianSmithValue, myHashMap.get(damianSmithId));
         assertEquals(robertNowakValue, myHashMap.get(robertNowakKeyId));
@@ -110,7 +115,7 @@ class MyHashMapTest {
         //Given
         String robertNowakKeyId = "12";
         String robertNowakValue = "Robert Nowak";
-        String damianSmithId = "12222";
+        String damianSmithId = "122223131321";
         String damianSmithValue = "Damian Smith";
         MyMap<String, String> myHashMap = new MyHashMap<>();
         myHashMap.put(robertNowakKeyId, robertNowakValue);
@@ -187,10 +192,10 @@ class MyHashMapTest {
         myHashMap.put(robertNowakKeyId, robertNowakValue);
         myHashMap.put(damianSmithId, damianSmithValue);
         //When
-        Object remove = myHashMap.remove(robertNowakKeyId);
+        String remove = myHashMap.remove(robertNowakKeyId);
         //Then
         assertEquals(1, myHashMap.size());
-        assertEquals(robertNowakKeyId, remove);
+        assertEquals(robertNowakValue, remove);
     }
 
     @Test

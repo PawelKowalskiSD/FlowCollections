@@ -5,6 +5,7 @@ public interface MyMap<K, V> {
         K getKey();
         V getValue();
         V setValue(V value);
+        Entry<K, V> next();
         boolean equals(Object o);
         int hashCode();
     }

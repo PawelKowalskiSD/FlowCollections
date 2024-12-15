@@ -122,7 +122,7 @@ public class MyLinkedList<E> implements MyList<E> {
     }
 
     private void checkIndexIsValid(int index) {
-        if (index < 0 || index >= size)
+        if (index < 0 || index > size)
             throw new IndexOutOfBoundsException();
     }
 
